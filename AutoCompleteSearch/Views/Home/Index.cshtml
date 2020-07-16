@@ -6,10 +6,9 @@
         <form>
             <div class="form-group">
                 <input type="text" class="form-control" name="searchKey" id="searchKey" ng-model="searchKey" ng-keyup="SearchGithub(searchKey)" />
-                <ul class="list-group" ng-model="hideAutocomplete" ng-hide="hideAutocomplete">
-                    <li class="list-group-item" ng-repeat="repo in topRepoList" ng-click="FillTextBox(repo)">{{repo}}</li>
+                <ul class="list-group" ng-hide="hideAutocomplete">
+                    <li class="list-group-item" ng-repeat="repo in topRepoList track by $index" ng-click="FillTextBox(repo)">{{repo}}</li>
                 </ul>
-                @*<p ng-model="testVar">{{testVar}}</p>*@
             </div>
         </form>
     </div>

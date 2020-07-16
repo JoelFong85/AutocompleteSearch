@@ -16,29 +16,40 @@ namespace AutoCompleteSearch.Controllers
         [HttpPost]
         public async Task<List<string>> SearchGithubRepos([FromBody] SearchGithubReposRequestModel model)
         {
-            //if searchKey is null or empty
-            //check if string length > 256            
-            //add try catch block
-
-            //prep data
-            string githubSearchBaseUrl = ApplicationConstants.GithubSearchBaseUrl;
-            string apiPath = $@"{githubSearchBaseUrl}{model.searchKey}";
-
-            GithubSearchResponseModel githubResponse = new GithubSearchResponseModel();
-
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", ApplicationConstants.GithubUserAgent);
-
-            HttpResponseMessage response = await client.GetAsync(apiPath);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string jsonString = await response.Content.ReadAsStringAsync();
-                githubResponse = JsonConvert.DeserializeObject<GithubSearchResponseModel>(jsonString);
-            }
-            //else
+                if (string.IsNullOrEmpty(model.searchKey))
+                    throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyEmpty);
 
-            // check if githubResponse is null
-            return githubResponse.items.Select(m => m.name).ToList();
+                if (model.searchKey.Length >= ApplicationConstants.GitHubSearch.MaxCharCount)
+                    throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyToolong);
+
+                //prep data
+                string githubSearchBaseUrl = ApplicationConstants.GitHubSearch.BaseUrl;
+                string apiPath = $@"{githubSearchBaseUrl}{model.searchKey}";
+
+                GithubSearchResponseModel githubResponse = new GithubSearchResponseModel();
+
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Add("User-Agent", ApplicationConstants.GitHubSearch.UserAgent);
+
+                HttpResponseMessage response = await client.GetAsync(apiPath);
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonString = await response.Content.ReadAsStringAsync();
+                    githubResponse = JsonConvert.DeserializeObject<GithubSearchResponseModel>(jsonString);
+                }
+                //else
+
+                // what to do if response has no elements
+                return githubResponse.items.Select(m => m.name).Take(ApplicationConstants.GitHubSearch.RecordsToTake).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
     }
