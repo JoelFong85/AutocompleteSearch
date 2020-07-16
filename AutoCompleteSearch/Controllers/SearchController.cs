@@ -14,7 +14,7 @@ namespace AutoCompleteSearch.Controllers
     public class SearchController : ApiController
     {
         [HttpPost]
-        public async Task<List<string>> SearchGithubRepos([FromBody] string searchKey)
+        public async Task<List<string>> SearchGithubRepos([FromBody] SearchGithubReposRequestModel model)
         {
             //if searchKey is null or empty
             //check if string length > 256            
@@ -22,7 +22,7 @@ namespace AutoCompleteSearch.Controllers
 
             //prep data
             string githubSearchBaseUrl = ApplicationConstants.GithubSearchBaseUrl;
-            string apiPath = $@"{githubSearchBaseUrl}{searchKey}";
+            string apiPath = $@"{githubSearchBaseUrl}{model.searchKey}";
 
             GithubSearchResponseModel githubResponse = new GithubSearchResponseModel();
 
@@ -38,7 +38,7 @@ namespace AutoCompleteSearch.Controllers
             //else
 
             // check if githubResponse is null
-            return githubResponse.items.Select(m => m.full_name).ToList();
+            return githubResponse.items.Select(m => m.name).ToList();
         }
 
     }

@@ -1,27 +1,33 @@
 ﻿angular.module('SearchApp', [])
     .controller('searchController', function ($scope, $http) {
 
-        console.log("aaa");
         $scope.testVar = "Hello world";
-        console.log("bbb");
+        $scope.searchKey = "";
+        $scope.topRepoList = [];
 
-        //$http.post('/api/Search', { 'questionId': option.questionId, 'optionId': option.id })
-        //    .success(function (data, status, headers, config) {
-        //        $scope.correctAnswer = (data === true);
-        //        $scope.working = false;
-        //    }).error(function (data, status, headers, config) {
-        //        $scope.title = "Oops... something went wrong";
-        //        $scope.working = false;
-        //    });
+        $scope.SearchGithub = () => {
+            console.log($scope.searchKey);
 
+            $http({
+                url: "/api/Search/SearchGithubRepos",
+                method: "POST",
+                data: { 'searchKey': $scope.searchKey }
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                $scope.topRepoList = response.data;
+                $scope.hideAutocomplete = false;
+            }, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                $scope.error = response.statusText;
+            });
+        }
 
-        //$scope.answered = false;
-        //$scope.title = "loading question...";
-        //$scope.options = [];
-        //$scope.correctAnswer = false;
-        //$scope.working = false;
+        $scope.FillTextBox = (chosenRepo) => {
+            console.log("111 " + chosenRepo);
+            $scope.searchKey = chosenRepo;
+            $scope.hideAutocomplete = true;
+        }
 
-        //$scope.answer = function () {
-        //    return $scope.correctAnswer ? 'correct' : 'incorrect';
-        //};
     });

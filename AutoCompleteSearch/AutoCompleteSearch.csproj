@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="Models\Search\GithubSearchResponseModel.cs" />
     <Compile Include="Models\Search\Owner.cs" />
+    <Compile Include="Models\Search\SearchGithubReposRequestModel.cs" />
     <Compile Include="Models\Search\SearchItems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,13 +1,18 @@
-﻿<div id="bodyContainer" ng-app="SearchApp">
-    <section id="content">
-        <div class="container">
-            <div class="row">
-                <div class="flip-container text-center col-md-12" ng-controller="searchController">
-                    <p ng-model="testVar">{{testVar}}</p>                    
-                </div>
-            </div>
+﻿<div id="bodyContainer" ng-app="SearchApp" ng-controller="searchController">
+    <div class="container search-container">
+        <div>
+            <h1>Enter repo name:</h1>
         </div>
-    </section>
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" name="searchKey" id="searchKey" ng-model="searchKey" ng-keyup="SearchGithub(searchKey)" />
+                <ul class="list-group" ng-model="hideAutocomplete" ng-hide="hideAutocomplete">
+                    <li class="list-group-item" ng-repeat="repo in topRepoList" ng-click="FillTextBox(repo)">{{repo}}</li>
+                </ul>
+                @*<p ng-model="testVar">{{testVar}}</p>*@
+            </div>
+        </form>
+    </div>
 </div>
 
 
