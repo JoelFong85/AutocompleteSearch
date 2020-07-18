@@ -1,4 +1,7 @@
-﻿using AutoCompleteSearch.Models.Search;
+﻿using AutoCompleteSearch.Helpers;
+using AutoCompleteSearch.Models.Search;
+using AutoCompleteSearch.Validators.Search;
+using FluentValidation.Results;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,17 +19,22 @@ namespace AutoCompleteSearch.Controllers
         [HttpPost]
         public async Task<List<string>> SearchGithubRepos([FromBody] SearchGithubReposRequestModel model)
         {
+            //Log input params
+
             try
             {
-                if (string.IsNullOrEmpty(model.searchKey))
-                    throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyEmpty);
+                ValidationHelper.ValidateRequestModel(new SearchGithubReposRequestModelValidator(), model);
 
-                if (model.searchKey.Length >= ApplicationConstants.GitHubSearch.MaxCharCount)
-                    throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyToolong);
+                #region  Validation code before refactoring
+                //if (string.IsNullOrEmpty(model.searchKey))
+                //    throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyEmpty);
 
-                //prep data
-                string githubSearchBaseUrl = ApplicationConstants.GitHubSearch.BaseUrl;
-                string apiPath = $@"{githubSearchBaseUrl}{model.searchKey}";
+                //if (model.searchKey.Length >= ApplicationConstants.GitHubSearch.MaxCharCount)
+                //throw new Exception(ApplicationConstants.ErrorMessages.SearchKeyToolong);
+                #endregion
+
+                //consider making sorting more dynamic if the sorting order needs to be altered
+                string apiPath = $@"{ApplicationConstants.GitHubSearch.BaseUrl}{model.searchKey}&sort=stars&order=desc";
 
                 GithubSearchResponseModel githubResponse = new GithubSearchResponseModel();
 
@@ -39,18 +47,24 @@ namespace AutoCompleteSearch.Controllers
                     string jsonString = await response.Content.ReadAsStringAsync();
                     githubResponse = JsonConvert.DeserializeObject<GithubSearchResponseModel>(jsonString);
                 }
-                //else
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Forbidden)
+                        throw new Exception("Please try again in a minute");
+                }
 
-                // what to do if response has no elements
+                // If response has no elements, error msg handled at front end. 
+                // Can consider throwing error here with errorMsg, so all messaging is in 1 place.
                 return githubResponse.items.Select(m => m.name).Take(ApplicationConstants.GitHubSearch.RecordsToTake).ToList();
 
             }
             catch (Exception ex)
             {
+                //Log error msg
                 throw ex;
             }
-
         }
+
 
     }
 }

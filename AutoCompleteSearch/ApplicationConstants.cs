@@ -12,6 +12,7 @@ namespace AutoCompleteSearch
             public const string BaseUrl = "https://api.github.com/search/repositories?q=";
             public const string UserAgent = "JoelFong85";
             public const int RecordsToTake = 10;
+            public const int MinCharCount = 1;
             public const int MaxCharCount = 256;
         }
 
