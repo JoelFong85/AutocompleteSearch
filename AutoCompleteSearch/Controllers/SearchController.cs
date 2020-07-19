@@ -50,7 +50,7 @@ namespace AutoCompleteSearch.Controllers
                 else
                 {
                     if (response.StatusCode == HttpStatusCode.Forbidden)
-                        throw new Exception("Please try again in a minute");
+                        throw new Exception(ApplicationConstants.ErrorMessages.RateLimitExceeded);
                 }
 
                 // If response has no elements, error msg handled at front end. 

@@ -20,6 +20,7 @@ namespace AutoCompleteSearch
         {
             public const string SearchKeyEmpty = "Please try re-entering a search term";
             public const string SearchKeyToolong = "Please try reducing the length of your search term";
+            public const string RateLimitExceeded = "Please try again in a minute";
         }
 
 
