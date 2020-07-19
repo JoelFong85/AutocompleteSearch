@@ -8,14 +8,17 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 errorMessage">
                     <span ng-show="showErrorMsg">{{errorMsg}}</span>
                 </div>
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                    <input type="text" class="form-control" name="searchKey" id="searchKey" ng-model="searchKey" ng-keyup="SearchGithub(searchKey)" maxlength="256" />
-                    <ul class="list-group" ng-hide="hideAutocomplete">
-                        <li class="list-group-item text-left" ng-repeat="repo in topRepoList track by $index" ng-click="FillTextBox(repo)">{{repo}}</li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                    <button class="btn btn-primary"><i class="fa fa-search fa-fw"></i>  Search</button>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                        <input type="text" class="form-control" name="searchKey" id="searchKey" ng-model="searchKey" ng-keyup="SearchGithub(searchKey)" minlength="1" maxlength="256" />
+                        <ul class="list-group coloured-hover" ng-hide="hideAutocomplete">
+                            <li class="list-group-item text-left" ng-repeat="repo in topRepoList track by $index" ng-click="FillTextBox(repo)">{{repo}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <button class="btn btn-primary normal-button"><i class="fa fa-search fa-fw"></i>  Search</button>
+                        <button class="btn btn-primary mobile-button"><i class="fa fa-search fa-fw"></i></button>
+                    </div>
                 </div>
             </div>
         </form>
