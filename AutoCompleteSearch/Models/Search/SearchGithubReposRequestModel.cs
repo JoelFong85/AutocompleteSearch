@@ -8,5 +8,6 @@ namespace AutoCompleteSearch.Models.Search
     public class SearchGithubReposRequestModel
     {
         public string searchKey { get; set; }
+        public string sortFilter { get; set; }
     }
 }

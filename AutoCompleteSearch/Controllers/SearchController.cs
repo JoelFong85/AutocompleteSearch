@@ -34,7 +34,7 @@ namespace AutoCompleteSearch.Controllers
                 #endregion
 
                 //consider making sorting more dynamic if the sorting order needs to be altered
-                string apiPath = $@"{ApplicationConstants.GitHubSearch.BaseUrl}{model.searchKey}&sort=stars&order=desc";
+                string apiPath = $@"{ApplicationConstants.GitHubSearch.BaseUrl}{model.searchKey}&sort={model.sortFilter}&order=desc";
 
                 GithubSearchResponseModel githubResponse = new GithubSearchResponseModel();
 
@@ -49,8 +49,7 @@ namespace AutoCompleteSearch.Controllers
                 }
                 else
                 {
-                    if (response.StatusCode == HttpStatusCode.Forbidden)
-                        throw new Exception(ApplicationConstants.ErrorMessages.RateLimitExceeded);
+                    throw new Exception(response.ReasonPhrase);
                 }
 
                 // If response has no elements, error msg handled at front end. 

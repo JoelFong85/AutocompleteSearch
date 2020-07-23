@@ -15,7 +15,7 @@
             $http({
                 url: "/api/Search/SearchGithubRepos",
                 method: "POST",
-                data: { 'searchKey': $scope.searchKey }
+                data: { 'searchKey': $scope.searchKey, 'sortFilter': $scope.sortFilter}
             }).then(function successCallback(response) {
 
                 $scope.topRepoList = response.data;

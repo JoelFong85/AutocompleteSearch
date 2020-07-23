@@ -20,6 +20,14 @@
                         <button class="btn btn-primary mobile-button"><i class="fa fa-search fa-fw"></i></button>
                     </div>
                 </div>
+                <div ng-init="sortFilter = stars">
+                    <input type="radio" id="stars" name="stars" ng-model="sortFilter" value="stars">
+                    <label for="stars">Stars</label><br>
+                    <input type="radio" id="forks" name="forks" ng-model="sortFilter" value="forks">
+                    <label for="forks">Forks</label><br>
+                    <input type="radio" id="help-wanted-issues" name="help-wanted-issues" ng-model="sortFilter" value="help-wanted-issues">
+                    <label for="help-wanted-issues">Help wanted issues</label>
+                </div>
             </div>
         </form>
     </div>
